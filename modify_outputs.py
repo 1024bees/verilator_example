@@ -2,7 +2,7 @@ regex = r"BRA__([0-9]*)__KET"
 import re
 compiled = re.compile(regex)
 f = open("mod_dir/Vtop.cpp")
-o = open("mod_dir/Vtop2.cpp", "w+")
+o = ""
 
 
 generic_garbage = """
@@ -31,28 +31,34 @@ for line in f:
         fidx, sidx = a[0], a[1]
         if sf != -1:
             newline = f"{line[:sf]}_settle_virtual(vlSymsp,{fidx},{sidx});\n"
-            o.write(newline)
+            o+= newline
         else:
-            o.write(line)
+            o+= line
     else:
-        o.write(line)
+        o+= line
+f = open("mod_dir/Vtop.cpp","w+")
+f.write(o)
 
 f2 = open("mod_dir/Vtop_example_module.h")
-o2 = open("mod_dir/Vtop_example_module2.h")
+o2 = ""
 
 added_settle = False
 for line in f2:
-    if not added_settle and "_settle" in line:
-        o2.write(line)
-        o2.write("void __settle_virtual(Vtop__Syms* __restrict vlSymsp, int i, int j );\n")
-        add_settle = True
-    else:
-        o2.write(line)
+    if added_settle == False:
+        if "_settle" in line:
+            o2 += "void __settle_virtual(Vtop__Syms* __restrict vlSymsp, int i, int j );\n"
+            added_settle = True
+    o2 += line
+f2 = open("mod_dir/Vtop_example_module.h","w+")
+f2.write(o2)
+
 f3 = open("mod_dir/Vtop_example_module.cpp")
-o3 = open("mod_dir/Vtop_example_module2.cpp")
+o3 = ""
 for line in f3:
     if "=====" in line:
-        o3.write(line)
-        o3.write(generic_garbage)
+        o3 += line
+        o3 += generic_garbage
     else:
-        o3.write(line)
+        o3 += line
+f3 = open("mod_dir/Vtop_example_module.cpp","w+")
+f3.write(o3)
