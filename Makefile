@@ -35,8 +35,7 @@ VERILATOR_OPTS ?= \
 	-Wno-fatal 			\
 	--Wno-lint 			\
 	--cc 						\
-	--autoflush 		\
-	--output-split 0 
+	--autoflush 		
 
 
 

@@ -55,7 +55,7 @@ f2.write(o2)
 f3 = open("mod_dir/Vtop_example_module.cpp")
 o3 = ""
 for line in f3:
-    if "=====" in line:
+    if "STATIC VARIABLES" in line or "======" in line:
         o3 += line
         o3 += generic_garbage
     else:
