@@ -35,7 +35,11 @@ VERILATOR_OPTS ?= \
 	-Wno-fatal 			\
 	--Wno-lint 			\
 	--cc 						\
-	--autoflush 		
+	--autoflush     
+
+
+#
+
 
 
 
@@ -49,9 +53,19 @@ VERILATOR_OPTS ?= \
 # package inatall, and verilator is in your path. Otherwise find the
 # binary relative to $VERILATOR_ROOT (such as when inside the git sources).
 
-
-VERILATOR_ROOT ?= 
+	#perf stat -e L1-icache-misses,L1-icache-loads,instructions,l2_cache_req_stat.ic_fill_miss,ic_cache_fill_l2  obj_dir/V$(TOP)
+export VERILATOR_ROOT =  /localhome/jconnolly/verilator
 VERILATOR = $(VERILATOR_ROOT)/bin/verilator
+
+orig:
+	@echo "-- VERILATING --"
+	$(VERILATOR) $(VERILATOR_OPTS) --exe $(TOP).sv $(TB)
+	@echo "-- COMPILING --"
+	$(MAKE) -j 4 -C obj_dir -f V$(TOP).mk
+	@echo "-- RUNNING --"
+	time obj_dir/V$(TOP)
+	@echo "-- DONE --------------------"
+
 
 
 modified:
@@ -65,14 +79,6 @@ modified:
 	@echo "-- DONE --"
 
 
-orig:
-	@echo "-- VERILATING --"
-	$(VERILATOR) $(VERILATOR_OPTS) --exe $(TOP).sv $(TB)
-	@echo "-- COMPILING --"
-	$(MAKE) -j 4 -C obj_dir -f V$(TOP).mk
-	@echo "-- RUNNING --"
-	perf stat -e L1-icache-misses,L1-icache-loads,instructions,l2_cache_req_stat.ic_fill_miss,ic_cache_fill_l2  obj_dir/V$(TOP)
-	@echo "-- DONE --------------------"
 
 
 ######################################################################

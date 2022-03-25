@@ -1,22 +1,23 @@
+`define ROWS 256
+`define COLS 64
+
 module top(
   input i_clk,
   input i_reset_n,
-  input [159:0] [31:0] i_col_val,
-  input [40:0] [31:0] i_row_val,
+  input [`ROWS-1:0] [31:0] i_col_val,
+  input [`COLS-1:0] [31:0] i_row_val,
   output [31:0] o_val
 );
 
 
-  localparam NUM_ROWS = 4;
-  localparam NUM_COLS = 16;
 
 
 wire [63:0] [31:0] sum_out;
 
 genvar rr, cc;
 generate
-  for (rr=0; rr<40; rr=rr+1) begin : gen1
-    for (cc=0; cc<160; cc=cc+1) begin : gen2
+  for (rr=0; rr<`ROWS; rr=rr+1) begin : gen1
+    for (cc=0; cc<`COLS; cc=cc+1) begin : gen2
       example_module example(
         .i_clk      (i_clk),
         .i_reset_n  (i_reset_n),

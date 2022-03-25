@@ -62,3 +62,7 @@ for line in f3:
         o3 += line
 f3 = open("mod_dir/Vtop_example_module.cpp","w+")
 f3.write(o3)
+
+
+test_str = "Vtop_example_module___settle__TOP__top__DOT__gen1__BRA__37__KET____DOT__gen2__BRA__47__KET____DOT__example__18800((&vlSymsp->TOP__top__DOT__gen1__BRA__37__KET____DOT__gen2__BRA__47__KET____DOT__example));"
+
